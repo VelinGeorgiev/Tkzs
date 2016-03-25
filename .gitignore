@@ -60,3 +60,6 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+Tkzs/Tkzs/obj/
+Tkzs/Tkzs/bin/
+Tkzs/Tkzs/Tkzs - Web Deploy.pubxml

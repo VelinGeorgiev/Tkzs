@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div id="lobby" class="row text-center">
+    <h1>Welcome to Tkzs!</h1>
+    <h2>Game mechanics: Tap or click to collect animals.</h2>
+    <h2>Please enter nickname.</h2>
+    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+        <input id="nickname" type="text" class="form-control input-lg"/>
+        <div class="col-xs-12 alert alert-danger" style="display: none;" id="error">Please enter nickname.</div>
+    </div>
+    <div class="col-xs-12" style="padding-top: 1em;">
+        <button type="button" class="btn btn-primary btn-lg" id="start">Start</button>
+    </div>
+</div>
+
+<div id="game" class="row text-center" style="display: none;">
+</div>
+
+{% endblock %}

@@ -2,7 +2,13 @@
 
 // jQuery related functions.
 var start = function() {
-    if ($('#nickname').val() === '') return $('#error').show();
+    if ($('#nickname').val() === '') {
+        return $('#error_required').show();
+    }
+    if (!$('#nickname').val().match(/^[a-zA-Z0-9\s]+$/)) {
+        $('#error_required').hide();
+        return $('#error_not_match').show();
+    }
     $('#lobby').hide();
     $('#game').show();
 };
@@ -45,6 +51,7 @@ GameState.prototype.create = function () {
     // Set stage background to tiled grass
     this.background = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, "background");
     this.background.alpha = 0.8;
+    this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 
     // Create a group to hold the animals
     this.animalGroup = this.game.add.group();
@@ -110,10 +117,9 @@ GameState.prototype.fullScreen = function() {
     this.FULL_SCREEN = !this.FULL_SCREEN;
 
     if (this.FULL_SCREEN) {
-        this.game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
-        this.game.scale.stopFullScreen();
-    } else {
         this.game.scale.startFullScreen(false);
+    } else {
+        this.game.scale.stopFullScreen();
     }
 };
 
@@ -206,9 +212,24 @@ Animal.prototype.collect = function () {
 
     // Collect the animal.
     this.kill();
+    this.updateScore();
 
     // Start effect.
     this.game.state.callbackContext.getEffect(this.x, this.y);
+}
+
+Animal.prototype.updateScore = function() {
+
+    if (SCORE % 5 !== 0) return;
+    var name = $('#nickname').val();
+
+    $.ajax({
+        type: "POST",
+        url: "/score",
+        data: JSON.stringify({ "data": name + "#;" + 5 + "#;" + SCORE }),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8"
+    });
 }
 
 Animal.prototype.update = function () {
